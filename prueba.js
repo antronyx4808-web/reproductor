@@ -94,7 +94,23 @@ function cargarCancion(reproducir = false) {
 window.onload = () => {
     cargarCancion(false);
 };
+// Hace que la barra avance con la música
+audio.ontimeupdate = () => {
+    if (audio.duration && progressBar) {
+        const porcentaje = (audio.currentTime / audio.duration) * 100;
+        progressBar.value = porcentaje;
+    }
+};
 
+// Te permite hacer clic en cualquier parte de la barra para adelantar la canción
+if (progressBar) {
+    progressBar.oninput = () => {
+        if (audio.duration) {
+            const nuevoTiempo = (progressBar.value / 100) * audio.duration;
+            audio.currentTime = nuevoTiempo;
+        }
+    };
+}
 // ==========================================
 // 5. LÓGICA DE LA BARRITA DE PROGRESO
 // ==========================================
