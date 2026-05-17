@@ -464,3 +464,22 @@ body {
         font-size: 1rem;
     }
 }
+/* ... código de arriba normal ... */
+
+/* REVISA QUE ESTO ESTÉ ASÍ EN EL PURO FONDO */
+@media (max-width: 768px) {
+    #app-wrapper {
+        flex-direction: column !important; /* El !important obliga al cel a ponerse en vertical */
+    }
+    #playlist-sidebar {
+        width: 100% !important;
+        height: 240px !important;
+    }
+    .player-container {
+        width: 100% !important;
+    }
+    .vinyl-wrapper {
+        top: 72% !important;
+        left: 50% !important;
+    }
+}
