@@ -125,3 +125,18 @@ button:active {
     color: white;
     box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
 }
+.progress-container {
+    width: 100%;
+    margin: 15px 0;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+#progress-bar {
+    width: 100%;
+    accent-color: #00f2fe; /* Hace que el círculo y la barra brillen en azul neón */
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    height: 6px;
+}
