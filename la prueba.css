@@ -20,7 +20,108 @@ body {
     color: #ffffff;
     overflow-x: hidden;
 }
+/* ==========================================================================
+   5. OPTIMIZACIÓN PREMIUM PARA TELÉFONOS (CELULARES)
+   ========================================================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        align-items: flex-start; /* Permite scroll cómodo si la pantalla es muy pequeña */
+    }
 
+    #app-wrapper {
+        flex-direction: column; /* Alineación vertical perfecta */
+        gap: 20px;
+        padding: 10px;
+        margin-top: 15px;
+    }
+
+    /* 1. Ajuste de la Playlist en el Celular */
+    #playlist-sidebar {
+        width: 100%;
+        max-width: 360px;
+        height: 240px; /* Altura ideal para que quepan unas 3-4 canciones visibles */
+        padding: 18px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    #playlist-sidebar h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        text-align: center; /* Se ve más ordenado centrado en móvil */
+    }
+
+    .search-container {
+        margin-bottom: 10px;
+    }
+
+    #search-input {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    /* Controlamos que la lista scrolleable use el espacio restante */
+    #tracks-list-ui {
+        max-height: 130px;
+    }
+
+    #tracks-list-ui li {
+        padding: 10px 12px;
+        margin-bottom: 6px;
+        font-size: 0.85rem;
+    }
+
+    /* 2. Ajuste del Reproductor en el Celular */
+    .player-container {
+        width: 100%;
+        max-width: 360px;
+        padding: 22px;
+        gap: 15px;
+        z-index: 3; /* Obligado al frente para tapar el disco */
+    }
+
+    .lcd-display {
+        padding: 12px;
+        min-height: 50px;
+    }
+
+    #lcd-title {
+        font-size: 0.9rem;
+    }
+
+    /* Botonera táctil más grande y cómoda para los dedos */
+    .controls {
+        gap: 12px;
+    }
+
+    .controls button {
+        width: 48px;
+        height: 48px;
+        font-size: 1rem;
+        /* Evita el efecto de "sombras grises" molestas al tocar en pantallas táctiles */
+        -webkit-tap-highlight-color: transparent; 
+    }
+
+    /* 3. El Vinilo en el Celular: Efecto Eclipse Sutil */
+    .vinyl-wrapper {
+        top: 72%; /* Se posiciona exactamente detrás del centro del reproductor */
+        left: 50%;
+        width: 240px;
+        height: 240px;
+        z-index: 1; /* Estrictamente atrás */
+        opacity: 0.85; /* Un toque más sutil en móvil */
+    }
+
+    .vinyl-center {
+        width: 80px;
+        height: 80px;
+    }
+
+    .vinyl-center::after {
+        width: 12px;
+        height: 12px;
+    }
+}
 /* Contenedor principal que alinea la Playlist y el Reproductor */
 #app-wrapper {
     display: flex;
