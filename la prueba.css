@@ -180,3 +180,84 @@ button:active {
     from { transform: translateX(-50%) rotate(0deg); }
     to { transform: translateX(-50%) rotate(360deg); }
 }
+/* --- NUEVA DISTRIBUCIÓN LADO A LADO --- */
+#app-wrapper {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    max-width: 800px;
+    width: 90%;
+    margin: 50px auto;
+}
+
+/* Estilo de Cristal para la Barra Lateral Izquierda */
+#playlist-sidebar {
+    width: 280px;
+    height: 320px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+#playlist-sidebar h3 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+}
+
+/* Lista Escuchadora e Interactiva */
+#tracks-list-ui {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto; /* Si llegas a 100 canciones, activa barra de navegación interna */
+    flex-grow: 1;
+}
+
+/* Cada ítem o canción de la lista */
+#tracks-list-ui li {
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Corta textos muy largos con "..." */
+    transition: all 0.2s ease;
+}
+
+/* Efecto al pasar el mouse por encima */
+#tracks-list-ui li:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #00f2fe;
+}
+
+/* Canción que se está reproduciendo actualmente en la lista */
+#tracks-list-ui li.active-track {
+    background: rgba(0, 242, 254, 0.15);
+    color: #00f2fe;
+    font-weight: bold;
+    border-left: 3px solid #00f2fe;
+}
+
+/* Personalización de la mini barra de desplazamiento de la lista */
+#tracks-list-ui::-webkit-scrollbar {
+    width: 4px;
+}
+#tracks-list-ui::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
