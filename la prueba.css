@@ -1,263 +1,255 @@
-:root {
-    --primary: #00f2fe;
-    --secondary: #4facfe;
-    --bg-dark: #09090b;
-    --glass: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-}
-
+/* ==========================================
+   1. CONFIGURACIÓN GENERAL Y FONDO
+   ========================================== */
 body {
-    background: radial-gradient(circle at top left, #1e293b, #09090b);
-    height: 100vh;
     margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Fondo oscuro premium */
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-family: system-ui, -apple-system, sans-serif;
-    color: white;
+    justify-content: center;
 }
 
-/* Contenedor con Efecto Cristal (Glassmorphism) */
-.player-container {
-    background: var(--glass);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--glass-border);
-    padding: 40px;
-    border-radius: 30px;
-    width: 280px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+/* Contenedor maestro: Pone la lista y el reproductor lado a lado */
+#app-wrapper {
+    display: flex !important;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    max-width: 900px;
+    width: 95%;
+    margin: 50px auto;
 }
 
-/* Animación de luces de fondo que le da vida al reproductor */
-.player-container::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(from 180deg at 50% 50%, var(--primary), transparent, var(--secondary), transparent);
-    animation: rotate 12s linear infinite;
-    opacity: 0.1;
-    z-index: -1;
-}
-
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* Pantalla LCD Oscura */
-.screen {
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 20px;
+/* ==========================================
+   2. CUADRO IZQUIERDO (PLAYLIST SIDEBART)
+   ========================================== */
+#playlist-sidebar {
+    width: 300px;
+    height: 380px;
+    background: rgba(255, 255, 255, 0.06); /* Cristal traslúcido */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
     padding: 20px;
-    margin-bottom: 30px;
-    border: 1px solid var(--glass-border);
-    text-align: left;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+#playlist-sidebar h3 {
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+    text-transform: uppercase;
+}
+
+/* Lista de canciones */
+#tracks-list-ui {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto; /* Activa barra de desplazamiento si hay muchas canciones */
+    flex-grow: 1;
+    display: block !important;
+}
+
+/* Cada canción de la lista */
+#tracks-list-ui li {
+    color: #ffffff !important; /* Fuerza el texto a blanco brillante */
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Corta textos largos con "..." */
+    background: rgba(255, 255, 255, 0.03);
+    transition: all 0.2s ease;
+    display: block !important;
+}
+
+/* Al pasar el mouse sobre una canción */
+#tracks-list-ui li:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #00f2fe !important;
+    transform: translateX(4px);
+}
+
+/* Canción que está sonando actualmente */
+#tracks-list-ui li.active-track {
+    background: rgba(0, 242, 254, 0.18) !important;
+    color: #00f2fe !important;
+    font-weight: bold;
+    border-left: 4px solid #00f2fe;
+}
+
+/* ==========================================
+   3. CUADRO DERECHO (REPRODUCTOR DE CRISTAL)
+   ========================================== */
+.player-container {
+    position: relative; /* Permite que el vinilo se posicione atrás */
+    width: 350px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 25px;
+    box-sizing: border-box;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Pantalla LCD Virtual */
+.screen {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 #status {
-    font-size: 10px;
-    font-weight: 800;
+    font-size: 0.75rem;
+    font-weight: bold;
     letter-spacing: 2px;
-    color: var(--primary);
-    text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
+    color: #ffffff;
     transition: color 0.3s ease;
 }
 
 #track-name {
-    font-size: 14px;
-    font-family: 'Courier New', monospace;
-    color: #e2e8f0;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-family: 'Courier New', Courier, monospace; /* Estilo retro digital */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Botones Modernos Redondeados (Estilo Squircle) */
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-button {
-    background: white;
-    color: black;
-    border: none;
-    width: 55px;
-    height: 55px;
-    border-radius: 18px;
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
-}
-
-button:hover {
-    transform: translateY(-4px) scale(1.05);
-    background: var(--primary);
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
-}
-
-button:active {
-    transform: scale(0.95);
-}
-
-/* Botón Stop que cambia a rojo destructivo al pasar el cursor */
-#btn-stop {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid var(--glass-border);
-}
-
-#btn-stop:hover {
-    background: #ef4444;
-    color: white;
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
-}
+/* ==========================================
+   4. BARRITA DE PROGRESO (INTERACTIVA)
+   ========================================== */
 .progress-container {
     width: 100%;
-    margin: 15px 0;
-    padding: 0 10px;
+    margin-bottom: 20px;
+    padding: 0 5px;
     box-sizing: border-box;
 }
 
 #progress-bar {
     width: 100%;
-    accent-color: #00f2fe; /* Hace que el círculo y la barra brillen en azul neón */
+    accent-color: #00f2fe; /* El círculo brilla en azul neón */
     cursor: pointer;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
     height: 6px;
+    outline: none;
 }
-/* --- DISEÑO DEL DISCO DE VINILO --- */
+
+/* ==========================================
+   5. BOTONES DE CONTROL
+   ========================================== */
+.controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+}
+
+.controls button {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.controls button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #00f2fe;
+    color: #00f2fe;
+    transform: translateY(-2px);
+}
+
+.controls button:active {
+    transform: translateY(0);
+}
+
+/* ==========================================
+   6. DISCO DE VINILO (ANIMACIÓN DE FONDO)
+   ========================================== */
 .vinyl {
     position: absolute;
-    top: -60px; /* Lo sube un poco para que sobresalga elegantemente detrás del cristal */
+    top: -70px; /* Sobresale por la parte de atrás */
     left: 50%;
     transform: translateX(-50%);
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, #000 30%, #111 40%, #000 50%, #222 60%, #000 70%);
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, #000 30%, #111 40%, #000 50%, #1a1a1a 60%, #000 70%);
     border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
-    z-index: -1; /* Se va al fondo para que el cristal quede encima */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    z-index: -1; /* Detrás del cristal */
     display: flex;
     align-items: center;
     justify-content: center;
     
-    /* Animación lista, pero pausada por defecto */
-    animation: girarVinilo 4s linear infinite;
+    /* Animación cargada, pausada por defecto */
+    animation: girarVinilo 3.5s linear infinite;
     animation-play-state: paused; 
 }
 
-/* El centro del vinilo (la etiqueta de color) */
+/* Centro de color del Vinilo */
 .vinyl-center {
-    width: 50px;
-    height: 50px;
-    background: #00f2fe; /* Color neón a juego con tu barra */
+    width: 55px;
+    height: 55px;
+    background: #00f2fe; /* Azul neón combinando con el sistema */
     border-radius: 50%;
-    border: 4px solid #000;
+    border: 5px solid #000;
 }
 
-/* El truco de magia: Cuando JS le ponga la clase "playing", el disco empezará a rotar */
+/* Clase que activa el giro desde JavaScript */
 .vinyl.playing {
     animation-play-state: running;
 }
 
-/* Animación de rotación infinita */
+/* Animación CSS para rotar 360 grados */
 @keyframes girarVinilo {
     from { transform: translateX(-50%) rotate(0deg); }
     to { transform: translateX(-50%) rotate(360deg); }
 }
-/* --- NUEVA DISTRIBUCIÓN LADO A LADO --- */
-#app-wrapper {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-    justify-content: center;
-    max-width: 800px;
-    width: 90%;
-    margin: 50px auto;
-}
 
-/* Estilo de Cristal para la Barra Lateral Izquierda */
-#playlist-sidebar {
-    width: 280px;
-    height: 320px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    padding: 15px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-}
-
-#playlist-sidebar h3 {
-    color: white;
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 5px;
-}
-
-/* Lista Escuchadora e Interactiva */
-#tracks-list-ui {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    overflow-y: auto; /* Si llegas a 100 canciones, activa barra de navegación interna */
-    flex-grow: 1;
-}
-
-/* Cada ítem o canción de la lista */
-#tracks-list-ui li {
-    color: rgba(255, 255, 255, 0.7);
-    padding: 8px 12px;
-    margin-bottom: 5px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Corta textos muy largos con "..." */
-    transition: all 0.2s ease;
-}
-
-/* Efecto al pasar el mouse por encima */
-#tracks-list-ui li:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #00f2fe;
-}
-
-/* Canción que se está reproduciendo actualmente en la lista */
-#tracks-list-ui li.active-track {
-    background: rgba(0, 242, 254, 0.15);
-    color: #00f2fe;
-    font-weight: bold;
-    border-left: 3px solid #00f2fe;
-}
-
-/* Personalización de la mini barra de desplazamiento de la lista */
+/* Personalización de la barra de scroll para la lista */
 #tracks-list-ui::-webkit-scrollbar {
-    width: 4px;
+    width: 5px;
 }
 #tracks-list-ui::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 10px;
+}
+#tracks-list-ui::-webkit-scrollbar-thumb:hover {
+    background: #00f2fe;
 }
