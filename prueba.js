@@ -13,7 +13,7 @@ const playlist = [
     { archivo: "musica9.mp3", titulo: "Boa - Duvet" },
     { archivo: "musica10.mp3", titulo: "Los Retro - Amtrak" },
     { archivo: "musica11.mp3", titulo: "Konrad OLd Money - Dagga" },
-    { archivo: "musica12.mp3", titulo: "Tyler, The Creator - NEW MAGIC WAND" }
+    { archivo: "musica12.mp3", titulo: "Tyler, The Creator - NEW MAGIC WAND" },
 ];
 
 // ==========================================
