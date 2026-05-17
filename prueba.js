@@ -19,6 +19,7 @@ const playlist = [
 // ==========================================
 const statusText = document.getElementById('status');
 const trackName = document.getElementById('track-name');
+const progressBar = document.getElementById('progress-bar');
 
 const btnPlay = document.getElementById('btn-play');
 const btnPause = document.getElementById('btn-pause');
@@ -26,6 +27,9 @@ const btnStop = document.getElementById('btn-stop');
 const btnNext = document.getElementById('btn-next');
 const btnPrev = document.getElementById('btn-prev');
 
+// ==========================================
+// 3. CONFIGURACIÓN DEL REPRODUCTOR
+// ==========================================
 let indiceActual = 0;
 const audio = new Audio(); 
 
@@ -35,50 +39,21 @@ function cargarCancion(reproducir = false) {
         return;
     }
 
-    // El reproductor jala el archivo simplificado (ej: musica1.mp3)
-    audio.src = playlist[indiceActual].archivo;
-    
-    // Pero en la pantalla LCD se muestra el título estético
-    trackName.innerText = playlist[indiceActual].titulo;
-
-    if (reproducir) {
-        audio.play().catch(err => console.log("Esperando interacción..."));
-        statusText.innerText = "REPRODUCIENDO";
-        statusText.style.color = "#00f2fe"; 
-    } else {
-        statusText.innerText = "SISTEMA LISTO";
-        statusText.style.color = "white";
-    }
-}
-
-window.onload = () => {
-function cargarCancion(reproducir = false) {
-    if (playlist.length === 0) {
-        trackName.innerText = "No hay canciones";
-        return;
-    }
-
-    // 1. Detenemos por completo lo que esté sonando antes de cambiar
+    // Detenemos lo que esté sonando y cargamos la nueva ruta
     audio.pause();
-
-    // 2. Le asignamos el nuevo archivo simplificado (ej: musica2.mp3)
     audio.src = playlist[indiceActual].archivo;
-    
-    // 3. Forzamos al navegador a cargar el nuevo archivo en memoria
     audio.load(); 
     
-    // 4. Mostramos el título estético en la pantalla LCD
+    // Mostramos el título en la pantalla LCD
     trackName.innerText = playlist[indiceActual].titulo;
 
-    // Reseteamos la barrita de progreso a 0 para la nueva canción
-    progressBar.value = 0;
+    // Reseteamos la barrita a 0
+    if (progressBar) progressBar.value = 0;
 
-    // 5. Reproducción segura
     if (reproducir) {
-        // Le damos un mini respiro al navegador para que arranque la reproducción
+        // Ejecución segura para evitar bloqueos del navegador
         audio.oncanplaythrough = () => {
-            audio.play().catch(err => console.log("Interacción requerida o bloqueo de autoplay"));
-            // Borramos el evento para que no se quede repitiendo en bucle
+            audio.play().catch(err => console.log("Bloqueo de autoplay evitado"));
             audio.oncanplaythrough = null; 
         };
         
@@ -89,6 +64,41 @@ function cargarCancion(reproducir = false) {
         statusText.style.color = "white";
     }
 }
+
+// Inicializar el reproductor al cargar la página
+window.onload = () => {
+    cargarCancion(false);
+};
+
+// ==========================================
+// 4. LOGICA DE LA BARRITA DE PROGRESO
+// ==========================================
+audio.ontimeupdate = () => {
+    if (audio.duration && progressBar) {
+        const porcentaje = (audio.currentTime / audio.duration) * 100;
+        progressBar.value = porcentaje;
+    }
+};
+
+if (progressBar) {
+    progressBar.oninput = () => {
+        if (audio.duration) {
+            const nuevoTiempo = (progressBar.value / 100) * audio.duration;
+            audio.currentTime = nuevoTiempo;
+        }
+    };
+}
+
+// ==========================================
+// 5. CONTROLES DE LOS BOTONES
+// ==========================================
+btnPlay.onclick = () => {
+    if (playlist.length > 0) {
+        audio.play();
+        statusText.innerText = "REPRODUCIENDO";
+        statusText.style.color = "#00f2fe";
+    }
+};
 
 btnPause.onclick = () => {
     audio.pause();
@@ -117,26 +127,7 @@ btnPrev.onclick = () => {
     }
 };
 
+// Auto-avanzar al terminar la canción
 audio.onended = () => {
     btnNext.click();
-};
-// A) Seleccionamos la nueva barrita del HTML
-const progressBar = document.getElementById('progress-bar');
-
-// B) Hace que la barra se mueva sola al ritmo de la música
-audio.ontimeupdate = () => {
-    if (audio.duration) {
-        // Calcula el porcentaje actual de la canción
-        const porcentaje = (audio.currentTime / audio.duration) * 100;
-        progressBar.value = porcentaje;
-    }
-};
-
-// C) Detecta cuando tú mueves la barra para cambiar el momento de la canción
-progressBar.oninput = () => {
-    if (audio.duration) {
-        // Calcula el segundo exacto a donde moviste la barra
-        const nuevoTiempo = (progressBar.value / 100) * audio.duration;
-        audio.currentTime = nuevoTiempo;
-    }
 };
