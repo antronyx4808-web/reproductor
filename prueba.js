@@ -96,3 +96,23 @@ btnPrev.onclick = () => {
 audio.onended = () => {
     btnNext.click();
 };
+// A) Seleccionamos la nueva barrita del HTML
+const progressBar = document.getElementById('progress-bar');
+
+// B) Hace que la barra se mueva sola al ritmo de la música
+audio.ontimeupdate = () => {
+    if (audio.duration) {
+        // Calcula el porcentaje actual de la canción
+        const porcentaje = (audio.currentTime / audio.duration) * 100;
+        progressBar.value = porcentaje;
+    }
+};
+
+// C) Detecta cuando tú mueves la barra para cambiar el momento de la canción
+progressBar.oninput = () => {
+    if (audio.duration) {
+        // Calcula el segundo exacto a donde moviste la barra
+        const nuevoTiempo = (progressBar.value / 100) * audio.duration;
+        audio.currentTime = nuevoTiempo;
+    }
+};
