@@ -181,7 +181,7 @@ audio.onended = () => {
     btnNext.click();
 };
 // ==========================================
-// FUNCIÓN PARA EL BUSCADOR DE CANCIONES
+// FUNCIÓN PARA EL BUSCADOR (CORREGIDA Y REACTIVA)
 // ==========================================
 const searchInput = document.getElementById('search-input');
 
@@ -189,28 +189,33 @@ if (searchInput) {
     searchInput.addEventListener('input', (e) => {
         const textoBusqueda = e.target.value.toLowerCase();
         
-        // Filtramos el arreglo original buscando coincidencias en el título
+        // 1. Filtramos las canciones que coinciden con la búsqueda
         const cancionesFiltradas = playlist.filter(cancion => 
             cancion.titulo.toLowerCase().includes(textoBusqueda)
         );
         
-        // Limpiamos la lista visual actual
+        // 2. Limpiamos la lista visual de la izquierda
         const listaUI = document.getElementById('tracks-list-ui');
         listaUI.innerHTML = "";
         
-        // Volvemos a dibujar solo las canciones que coincidieron
+        // 3. Volvemos a dibujar solo los resultados encontrados
         cancionesFiltradas.forEach((cancion) => {
             const item = document.createElement('li');
             item.textContent = cancion.titulo;
             
-            // Mantenemos la lógica de que al hacer clic se reproduzca
+            // Si la canción que se está dibujando es la que suena actualmente, le dejamos el estilo activo
+            if (playlist[currentTrackIndex].archivo === cancion.archivo) {
+                item.classList.add('active'); // Por si manejas clase active en tu CSS
+            }
+            
+            // EL TRUCO ESTÁ AQUÍ: Al hacer clic, buscamos el índice REAL en la lista global
             item.addEventListener('click', () => {
-                // Buscamos el índice real en la playlist original para no perder el orden
                 const indiceReal = playlist.findIndex(p => p.archivo === cancion.archivo);
+                
                 if (indiceReal !== -1) {
-                    currentTrackIndex = indiceReal;
-                    cargarCancion(currentTrackIndex);
-                    reproducirCancion();
+                    currentTrackIndex = indiceReal; // Seteamos el índice global correcto
+                    cargarCancion(currentTrackIndex); // Carga el archivo mp3 real
+                    reproducirCancion(); // Dispara el play y activa el vinilo
                 }
             });
             
