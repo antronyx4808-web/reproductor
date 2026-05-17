@@ -239,3 +239,53 @@ body {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+/* ==========================================
+   DISEÑO RESPONSIVO PARA TELÉFONOS
+   ========================================== */
+@media (max-width: 768px) {
+    /* 1. Cambiamos las dos columnas a una sola fila vertical */
+    #app-wrapper {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 15px;
+        gap: 20px;
+        height: auto; /* Permite que la pantalla haga scroll hacia abajo si es necesario */
+        min-height: 100vh;
+    }
+
+    /* 2. Ajustamos la barra lateral (Playlist) para que ocupe el ancho del celular */
+    #playlist-sidebar {
+        width: 100%;
+        max-width: 350px; /* Alineado al ancho del reproductor */
+        max-height: 200px; /* Limitamos la altura para que no robe toda la pantalla */
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        padding-bottom: 15px;
+    }
+
+    /* 3. Ajustamos el contenedor del reproductor */
+    .player-container {
+        width: 100%;
+        max-width: 350px;
+        padding: 20px;
+    }
+
+    /* 4. Reducimos un poco el tamaño del vinilo para que no desborde en pantallas chicas */
+    .vinyl-wrapper {
+        width: 260px;
+        height: 260px;
+    }
+    
+    .vinyl {
+        width: 260px;
+        height: 260px;
+    }
+
+    /* 5. Ajustamos los botones para que sea fácil presionar con los dedos */
+    .controls button {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+}
