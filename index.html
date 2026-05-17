@@ -1,25 +1,50 @@
-<div class="player-container">
-    
-    <div class="vinyl-wrapper">
-        <div id="vinyl-record" class="vinyl">
-            <div class="vinyl-center"></div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Reproductor Premium - Panel Completo</title>
+    <link rel="stylesheet" href="la_prueba.css">
+</head>
+<body>
+
+    <div id="app-wrapper">
+        
+        <div id="playlist-sidebar">
+            <h3>Mi Playlist</h3>
+            <ul id="tracks-list-ui">
+                </ul>
         </div>
+
+        <div class="player-container">
+            
+            <div class="vinyl-wrapper">
+                <div id="vinyl-record" class="vinyl">
+                    <div class="vinyl-center"></div>
+                </div>
+            </div>
+
+            <div class="screen">
+                <div id="status">SISTEMA ONLINE</div>
+                <div id="track-name">Cargando lista...</div>
+            </div>
+
+            <div class="progress-container">
+                <input type="range" id="progress-bar" value="0" min="0" max="100">
+            </div>
+
+            <div class="controls">
+                <button id="btn-prev">⏮</button>
+                <button id="btn-play">▶</button>
+                <button id="btn-pause">||</button>
+                <button id="btn-stop">■</button>
+                <button id="btn-next">⏭</button>
+            </div>
+        </div>
+
     </div>
 
-    <div class="screen">
-        <div id="status">SISTEMA ONLINE</div>
-        <div id="track-name">Cargando lista...</div>
-    </div>
-
-    <div class="progress-container">
-        <input type="range" id="progress-bar" value="0" min="0" max="100">
-    </div>
-
-    <div class="controls">
-        <button id="btn-prev">⏮</button>
-        <button id="btn-play">▶</button>
-        <button id="btn-pause">||</button>
-        <button id="btn-stop">■</button>
-        <button id="btn-next">⏭</button>
-    </div>
-</div>
+    <script src="prueba.js"></script>
+</body>
+</html>
+       
