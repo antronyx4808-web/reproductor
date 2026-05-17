@@ -9,12 +9,13 @@ const playlist = [
     { archivo: "musica8.mp3", titulo: "Steve Lacy - Dark Red" },
     { archivo: "musica9.mp3", titulo: "Boa - Duvet" },
     { archivo: "musica10.mp3", titulo: "Los Retro - Amtrak" },
-    { archivo: "musica11.mp3", titulo: "Konrad OLd Money - Dagga" },
+    { archivo: "musica11.mp3", titulo: "Konrad Old Money - Dagga" },
     { archivo: "musica12.mp3", titulo: "Tyler, The Creator - NEW MAGIC WAND" },
     { archivo: "musica13.mp3", titulo: "ween - Ocean Man" },
     { archivo: "musica14.mp3", titulo: "CAFUNE - Tek it" },
     { archivo: "musica15.mp3", titulo: "Fleetwood Mac - The Chain" },
     { archivo: "musica16.mp3", titulo: "Surf Curse - Disco" },
+    { archivo: "musica17.mp3", titulo: "The Notorious B.I.G. - Big Poppa" },
 ];
 
 let currentTrackIndex = 0;
