@@ -52,19 +52,43 @@ function cargarCancion(reproducir = false) {
 }
 
 window.onload = () => {
-    cargarCancion(false);
-};
-
-// ==========================================
-// CONTROLES DE LOS BOTONES
-// ==========================================
-btnPlay.onclick = () => {
-    if (playlist.length > 0) {
-        audio.play();
-        statusText.innerText = "REPRODUCIENDO";
-        statusText.style.color = "#00f2fe";
+function cargarCancion(reproducir = false) {
+    if (playlist.length === 0) {
+        trackName.innerText = "No hay canciones";
+        return;
     }
-};
+
+    // 1. Detenemos por completo lo que esté sonando antes de cambiar
+    audio.pause();
+
+    // 2. Le asignamos el nuevo archivo simplificado (ej: musica2.mp3)
+    audio.src = playlist[indiceActual].archivo;
+    
+    // 3. Forzamos al navegador a cargar el nuevo archivo en memoria
+    audio.load(); 
+    
+    // 4. Mostramos el título estético en la pantalla LCD
+    trackName.innerText = playlist[indiceActual].titulo;
+
+    // Reseteamos la barrita de progreso a 0 para la nueva canción
+    progressBar.value = 0;
+
+    // 5. Reproducción segura
+    if (reproducir) {
+        // Le damos un mini respiro al navegador para que arranque la reproducción
+        audio.oncanplaythrough = () => {
+            audio.play().catch(err => console.log("Interacción requerida o bloqueo de autoplay"));
+            // Borramos el evento para que no se quede repitiendo en bucle
+            audio.oncanplaythrough = null; 
+        };
+        
+        statusText.innerText = "REPRODUCIENDO";
+        statusText.style.color = "#00f2fe"; 
+    } else {
+        statusText.innerText = "SISTEMA LISTO";
+        statusText.style.color = "white";
+    }
+}
 
 btnPause.onclick = () => {
     audio.pause();
