@@ -14,6 +14,7 @@ const playlist = [
     { archivo: "musica13.mp3", titulo: "ween - Ocean Man" },
     { archivo: "musica14.mp3", titulo: "CAFUNE - Tek it" },
     { archivo: "musica15.mp3", titulo: "Fleetwood Mac - The Chain" },
+    { archivo: "musica16.mp3", titulo: "Surf Curse - Disco" },
 ];
 
 // ==========================================
