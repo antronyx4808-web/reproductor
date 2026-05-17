@@ -8,7 +8,10 @@ const playlist = [
     { archivo: "musica4.mp3", titulo: "Mac DeMarco - Chamber of Reflection" },
     { archivo: "musica5.mp3", titulo: "Radiohead - No Surprises" },
     { archivo: "musica6.mp3", titulo: "Chezile - Beanie" },
-    { archivo: "musica7.mp3", titulo: "Kanye West- Runaway" },
+    { archivo: "musica7.mp3", titulo: "Kanye West- Runaway" }
+    { archivo: "musica8.mp3", titulo: "Steve Lacy - Dark Red" },
+    { archivo: "musica9.mp3", titulo: "Boa - Duvet" },
+    { archivo: "musica10.mp3", titulo: "Los Retro - Amtrak" },
 ];
 
 // ==========================================
