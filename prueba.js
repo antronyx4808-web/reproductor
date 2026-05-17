@@ -1,6 +1,3 @@
-// ==========================================
-// 1. TU LISTADO REAL DE CANCIONES
-// ==========================================
 const playlist = [
     { archivo: "musica1.mp3", titulo: "NCS - Prueba " },
     { archivo: "musica2.mp3", titulo: "Tame Impala - Let it happen" },
