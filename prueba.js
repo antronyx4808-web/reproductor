@@ -10,7 +10,7 @@ const playlist = [
     { archivo: "musica4.mp3", titulo: "Mac DeMarco - Chamber of Reflection" },
     { archivo: "musica5.mp3", titulo: "Radiohead - No Surprises" },
     { archivo: "musica6.mp3", titulo: "Chezile - Beanie" },
-    { archivo: "musica7.mp3", titulo: "Kanye West- Runaway" }
+    { archivo: "musica7.mp3", titulo: "Kanye West- Runaway" },
     // { archivo: "musica6.mp3", titulo: "Nombre de la Canción" }
 ];
 
