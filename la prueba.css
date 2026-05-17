@@ -1,244 +1,68 @@
-body {
+/* ==========================================================================
+   1. CONFIGURACIÓN GENERAL Y FONDO DE LA PÁGINA
+   ========================================================================== */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Fondo oscuro premium */
+}
+
+body {
+    background: #0f0f1a; /* Fondo oscuro profundo */
+    background-image: 
+        radial-gradient(at 20% 20%, rgba(26, 21, 44, 0.8) 0px, transparent 50%),
+        radial-gradient(at 80% 80%, rgba(13, 37, 56, 0.8) 0px, transparent 50%);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #ffffff;
+    overflow-x: hidden;
 }
+
+/* Contenedor principal que alinea la Playlist y el Reproductor */
 #app-wrapper {
-    display: flex !important;
+    display: flex;
     flex-direction: row;
-    gap: 40px;
     align-items: center;
     justify-content: center;
-    max-width: 900px;
-    width: 95%;
-    margin: 50px auto;
+    position: relative;
+    gap: 40px;
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
 }
+
+/* ==========================================================================
+   2. DISEÑO DE LA PLAYLIST (BARRA LATERAL IZQUIERDA)
+   ========================================================================== */
 #playlist-sidebar {
-    width: 300px;
-    height: 380px;
-    background: rgba(255, 255, 255, 0.06); /* Cristal traslúcido */
+    width: 320px;
+    height: 480px;
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    padding: 20px;
-    box-sizing: border-box;
+    padding: 25px;
     display: flex;
     flex-direction: column;
+    z-index: 3; /* Al frente para que no lo tape el disco */
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 #playlist-sidebar h3 {
-    color: #ffffff;
-    margin-top: 0;
-    margin-bottom: 15px;
     font-size: 1.2rem;
+    font-weight: 600;
     letter-spacing: 1px;
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.9);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 8px;
-    text-transform: uppercase;
 }
 
-/* Lista de canciones */
-#tracks-list-ui {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    overflow-y: auto; /* Activa barra de desplazamiento si hay muchas canciones */
-    flex-grow: 1;
-    display: block !important;
-}
-
-/* Cada canción de la lista */
-#tracks-list-ui li {
-    color: #ffffff !important; /* Fuerza el texto a blanco brillante */
-    padding: 10px 14px;
-    margin-bottom: 6px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Corta textos largos con "..." */
-    background: rgba(255, 255, 255, 0.03);
-    transition: all 0.2s ease;
-    display: block !important;
-}
-
-/* Al pasar el mouse sobre una canción */
-#tracks-list-ui li:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #00f2fe !important;
-    transform: translateX(4px);
-}
-
-/* Canción que está sonando actualmente */
-#tracks-list-ui li.active-track {
-    background: rgba(0, 242, 254, 0.18) !important;
-    color: #00f2fe !important;
-    font-weight: bold;
-    border-left: 4px solid #00f2fe;
-}
-
-.player-container {
-    position: relative; /* Permite que el vinilo se posicione atrás */
-    width: 350px;
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 16px;
-    padding: 25px;
-    box-sizing: border-box;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Pantalla LCD Virtual */
-.screen {
-    width: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    border-radius: 10px;
-    padding: 15px;
-    box-sizing: border-box;
-    text-align: center;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-#status {
-    font-size: 0.75rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-bottom: 5px;
-    color: #ffffff;
-    transition: color 0.3s ease;
-}
-
-#track-name {
-    color: #ffffff;
-    font-size: 0.95rem;
-    font-family: 'Courier New', Courier, monospace; /* Estilo retro digital */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* ==========================================
-   4. BARRITA DE PROGRESO (INTERACTIVA)
-   ========================================== */
-.progress-container {
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 0 5px;
-    box-sizing: border-box;
-}
-
-#progress-bar {
-    width: 100%;
-    accent-color: #00f2fe; /* El círculo brilla en azul neón */
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    height: 6px;
-    outline: none;
-}
-
-/* ==========================================
-   5. BOTONES DE CONTROL
-   ========================================== */
-.controls {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    width: 100%;
-}
-
-.controls button {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    padding: 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.controls button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #00f2fe;
-    color: #00f2fe;
-    transform: translateY(-2px);
-}
-
-.controls button:active {
-    transform: translateY(0);
-}
-
-/* ==========================================
-   6. DISCO DE VINILO (ANIMACIÓN DE FONDO)
-   ========================================== */
-/* ==========================================
-   6. DISCO DE VINILO (ANIMACIÓN REPARADA)
-   ========================================== */
-/* El cascarón solo se encarga de centrar y posicionar atrás */
-.vinyl-wrapper {
-    position: absolute;
-    top: -70px;
-    left: 50%;
-    transform: translateX(-50%); /* Centrado perfecto e inmóvil */
-    width: 220px;
-    height: 220px;
-    z-index: -1;
-}
-
-/* El disco ahora gira libremente sobre su propio eje sin moverse de su lugar */
-.vinyl {
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, #000 30%, #111 40%, #000 50%, #1a1a1a 60%, #000 70%);
-    border-radius: 50%;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    /* Animación limpia de rotación pura */
-    animation: girarVinilo 3.5s linear infinite;
-    animation-play-state: paused; 
-}
-
-/* Centro de color del Vinilo */
-.vinyl-center {
-    width: 55px;
-    height: 55px;
-    background: #00f2fe; 
-    border-radius: 50%;
-    border: 5px solid #000;
-}
-
-/* Clase que activa el giro desde JavaScript */
-.vinyl.playing {
-    animation-play-state: running;
-}
-
-/* Animación matemática pura: de 0 a 360 grados exactos */
-@keyframes girarVinilo {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
+/* Buscador de canciones */
 .search-container {
     margin-bottom: 15px;
     width: 100%;
@@ -246,131 +70,177 @@ body {
 
 #search-input {
     width: 100%;
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
     color: #fff;
     font-size: 0.9rem;
-    box-sizing: border-box;
     outline: none;
     transition: all 0.3s ease;
 }
 
 #search-input:focus {
-    border-color: #00d2ff; /* Brillo neón azul al hacer clic para escribir */
-    box-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
+    border-color: #00d2ff;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 #search-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.4);
 }
-/* ==========================================
-   DISEÑO RESPONSIVO PARA TELÉFONOS
-   ========================================== */
-@media (max-width: 768px) {
-    /* 1. Cambiamos las dos columnas a una sola fila vertical */
-    #app-wrapper {
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 15px;
-        gap: 20px;
-        height: auto; /* Permite que la pantalla haga scroll hacia abajo si es necesario */
-        min-height: 100vh;
-    }
 
-    /* 2. Ajustamos la barra lateral (Playlist) para que ocupe el ancho del celular */
-    #playlist-sidebar {
-        width: 100%;
-        max-width: 350px; /* Alineado al ancho del reproductor */
-        max-height: 200px; /* Limitamos la altura para que no robe toda la pantalla */
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-        padding-bottom: 15px;
-    }
-
-    /* 3. Ajustamos el contenedor del reproductor */
-    .player-container {
-        width: 100%;
-        max-width: 350px;
-        padding: 20px;
-    }
-
-    /* 4. Reducimos un poco el tamaño del vinilo para que no desborde en pantallas chicas */
-    .vinyl-wrapper {
-        width: 260px;
-        height: 260px;
-    }
-    
-    .vinyl {
-        width: 260px;
-        height: 260px;
-    }
-
-    /* 5. Ajustamos los botones para que sea fácil presionar con los dedos */
-    .controls button {
-        width: 45px;
-        height: 45px;
-        font-size: 1.1rem;
-    }
+/* Lista de canciones scrolleable */
+#tracks-list-ui {
+    list-style: none;
+    overflow-y: auto;
+    flex-grow: 1;
+    padding-right: 5px;
 }
-/* ==========================================
-   DISEÑO RESPONSIVO PARA TELÉFONOS (CORREGIDO)
-   ========================================== */
-@media (max-width: 768px) {
-    /* 1. Cambiamos las dos columnas a una sola fila vertical */
-    #app-wrapper {
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 15px;
-        gap: 20px;
-        height: auto;
-        min-height: 100vh;
-    }
 
-    /* 2. Ajustamos la barra lateral (Playlist) arriba */
-    #playlist-sidebar {
-        width: 100%;
-        max-width: 350px;
-        max-height: 180px; /* Un poco más pequeña para dar aire al reproductor */
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-        padding-bottom: 15px;
-        z-index: 2; /* Asegura que la lista esté al frente */
-    }
-
-    /* 3. Ajustamos el contenedor del reproductor */
-    .player-container {
-        width: 100%;
-        max-width: 350px;
-        padding: 20px;
-        z-index: 2; /* CAPA AL FRENTE: Esto hace que el cuadro de cristal tape el exceso del disco */
-        background: rgba(255, 255, 255, 0.04); /* Un toque más opaco por si acaso */
-    }
-
-    /* 4. El Vinilo en el celular (Fijado estrictamente en el fondo) */
-    .vinyl-wrapper {
-        width: 250px;
-        height: 250px;
-        position: absolute; /* Se despega del flujo para no empujar los botones */
-        top: 50%; /* Lo centramos respecto al reproductor */
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: -1; /* CAPA AL FONDO: Obliga al disco a meterse detrás de la pantalla y botones */
-        pointer-events: none; /* Evita que el disco intercepte los clics táctiles */
-    }
-    
-    .vinyl {
-        width: 100%;
-        height: 100%;
-    }
-
-    /* 5. Ajustamos los botones para que sea fácil presionar con los dedos */
-    .controls button {
-        width: 45px;
-        height: 45px;
-        font-size: 1.1rem;
-    }
+/* Estilos de la barra de scroll de la lista */
+#tracks-list-ui::-webkit-scrollbar {
+    width: 6px;
 }
+#tracks-list-ui::-webkit-scrollbar-track {
+    background: transparent;
+}
+#tracks-list-ui::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+#tracks-list-ui::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Ítems de la lista */
+#tracks-list-ui li {
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.2s ease;
+}
+
+#tracks-list-ui li:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 210, 255, 0.3);
+    transform: translateX(3px);
+}
+
+/* Canción activa sonando actualmente */
+#tracks-list-ui li.active {
+    background: rgba(0, 210, 255, 0.1);
+    border-color: #00d2ff;
+    color: #00d2ff;
+    font-weight: 600;
+    box-shadow: inset 0 0 8px rgba(0, 210, 255, 0.2);
+}
+
+/* ==========================================================================
+   3. CAJA DEL REPRODUCTOR PRINCIPAL
+   ========================================================================== */
+.player-container {
+    width: 380px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 3; /* Al frente para cubrir y cortar visualmente el disco del fondo */
+    box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Pantalla LCD Virtual */
+.lcd-display {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 15px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+#lcd-title {
+    color: #00d2ff;
+    font-family: monospace;
+    font-size: 1rem;
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+/* Barrita de Progreso Inteligente */
+.progress-container {
+    width: 100%;
+    margin-top: 5px;
+}
+
+#progress-bar {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#progress-bar::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+}
+
+#progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #00d2ff;
+    cursor: pointer;
+    box-shadow: 0 0 8px #00d2ff;
+    margin-top: -4px; /* Centrado en el track */
+    transition: transform 0.1s ease;
+}
+
+#progress-bar::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Módulo de la Botonera */
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.controls button {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    width: 50px;
+    height: 50px
