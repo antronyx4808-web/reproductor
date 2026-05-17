@@ -286,13 +286,18 @@ body {
     }
 
     /* El Vinilo se esconde exactamente detrás del reproductor en la segunda fila */
-    .vinyl-wrapper {
-        top: 73%; /* Se desplaza hacia abajo para centrarse en el reproductor */
-        left: 50%;
-        width: 260px;
-        height: 260px;
-        z-index: 1; /* Forzado al fondo */
-    }
+.vinyl-wrapper {
+    position: absolute;
+    z-index: 1; /* Se mete atrás */
+    top: 50%;
+    left: 54%; /* 👈 Baja este número a 54% o 55% para pegarlo bien detrás del reproductor */
+    transform: translate(-50%, -50%);
+    width: 340px;
+    height: 340px;
+    pointer-events: none;
+    animation: girarDisco 4s linear infinite;
+    animation-play-state: paused;
+}
 
     /* Botones con tamaño ideal para pantallas táctiles */
     .controls button {
