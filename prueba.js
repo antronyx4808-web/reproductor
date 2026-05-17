@@ -8,9 +8,9 @@ const playlist = [
     { archivo: "musica2.mp3", titulo: "Tame Impala - Let in happen" },
     { archivo: "musica3.mp3", titulo: "Joey Valance y Brae - Punk Tactics" },
     { archivo: "musica4.mp3", titulo: "Mac DeMarco - Chamber of Reflection" },
-    { archivo: "musica5.mp3", titulo: "Radiohead - No Surprises" }
-    { archivo: "musica6.mp3", titulo: "Chezile - Beanie" }
-    { archivo: "musica7.mp3", titulo: "Kanye West- Runaway" } 
+    { archivo: "musica5.mp3", titulo: "Radiohead - No Surprises" },
+    { archivo: "musica6.mp3", titulo: "Chezile - Beanie" },
+    { archivo: "musica7.mp3", titulo: "Kanye West- Runaway" },
     // { archivo: "musica6.mp3", titulo: "Nombre de la Canción" }
 ];
 
