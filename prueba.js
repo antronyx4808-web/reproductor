@@ -11,6 +11,9 @@ const playlist = [
     { archivo: "musica10.mp3", titulo: "Los Retro - Amtrak" },
     { archivo: "musica11.mp3", titulo: "Konrad OLd Money - Dagga" },
     { archivo: "musica12.mp3", titulo: "Tyler, The Creator - NEW MAGIC WAND" },
+    { archivo: "musica13.mp3", titulo: "ween - Ocean Man" },
+    { archivo: "musica14.mp3", titulo: "CAFUNE - Tek it" },
+    { archivo: "musica15.mp3", titulo: "Fleetwood Mac - The Chain" },
 ];
 
 // ==========================================
