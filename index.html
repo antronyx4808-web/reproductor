@@ -3,53 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servidor de musica</title>
-    <link rel="stylesheet" href="la prueba.css">
+    <title>Servidor de Música - Proyecto Final</title>
+    <link rel="stylesheet" href="la_prueba.css">
 </head>
 <body>
 
     <div id="app-wrapper">
-        
 
-<div id="playlist-sidebar">
-    <h3>MI PLAYLIST</h3>
-    
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Buscar canción o artista...">
-    </div>
+        <div id="playlist-sidebar">
+            <h3>MI PLAYLIST</h3>
+            
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar canción o artista...">
+            </div>
 
-    <ul id="tracks-list-ui"></ul>
-</div>    
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Buscar canción o artista...">
-    </div>
-
-    <ul id="tracks-list-ui">
-        </ul>
-</div>
-    
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Buscar canción o artista...">
-    </div>
-
-    <ul id="tracks-list-ui">
-        </ul>
-</div>
             <ul id="tracks-list-ui">
                 </ul>
         </div>
 
         <div class="player-container">
             
-            <div class="vinyl-wrapper">
-                <div id="vinyl-record" class="vinyl">
-                    <div class="vinyl-center"></div>
-                </div>
-            </div>
-
-            <div class="screen">
-                <div id="status">SISTEMA ONLINE</div>
-                <div id="track-name">Cargando lista...</div>
+            <div class="lcd-display">
+                <div id="lcd-title">SISTEMA ONLINE</div>
             </div>
 
             <div class="progress-container">
@@ -57,17 +32,21 @@
             </div>
 
             <div class="controls">
-                <button id="btn-prev">⏮</button>
-                <button id="btn-play">▶</button>
-                <button id="btn-pause">||</button>
-                <button id="btn-stop">■</button>
-                <button id="btn-next">⏭</button>
+                <button id="btn-prev" title="Anterior">⏮</button>
+                <button id="btn-play" title="Reproducir">▶</button>
+                <button id="btn-pause" title="Pausar">⏸</button>
+                <button id="btn-stop" title="Detener">⏹</button>
+                <button id="btn-next" title="Siguiente">⏭</button>
             </div>
+
+        </div>
+
+        <div class="vinyl-wrapper">
+            <img src="vinilo.png" class="vinyl" alt="Disco de Vinilo">
         </div>
 
     </div>
 
-<script src="prueba.js"></script>
+    <script src="prueba.js"></script>
 </body>
 </html>
-       
