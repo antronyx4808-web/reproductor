@@ -16,6 +16,9 @@ const playlist = [
     { archivo: "musica15.mp3", titulo: "Fleetwood Mac - The Chain" },
     { archivo: "musica16.mp3", titulo: "Surf Curse - Disco" },
     { archivo: "musica17.mp3", titulo: "The Notorious B.I.G. - Big Poppa" },
+    { archivo: "musica18.mp3", titulo: "Kanye West - Flashing Lights" },
+    { archivo: "musica19.mp3", titulo: "Eminem - Superman (con Dina Rae)" },
+    { archivo: "musica20.mp3", titulo: "Teddybears - Punkrocker" },
 ];
 
 let currentTrackIndex = 0;
