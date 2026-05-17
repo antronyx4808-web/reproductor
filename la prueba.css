@@ -286,19 +286,76 @@ body {
     }
 
     /* El Vinilo se esconde exactamente detrás del reproductor en la segunda fila */
+/* ==========================================================================
+   4. CONTROL DEL VINILO DE FONDO (DISEÑO 100% CSS PURO)
+   ========================================================================== */
 .vinyl-wrapper {
     position: absolute;
-    z-index: 1; /* Se mete atrás */
+    z-index: 1; /* Se mantiene atrás del reproductor de cristal */
     top: 50%;
-    left: 54%; /* 👈 Baja este número a 54% o 55% para pegarlo bien detrás del reproductor */
+    left: 54%; /* Ajustado para que se asome elegantemente a la izquierda */
     transform: translate(-50%, -50%);
-    width: 340px;
-    height: 340px;
+    width: 320px;
+    height: 320px;
     pointer-events: none;
     animation: girarDisco 4s linear infinite;
-    animation-play-state: paused;
+    animation-play-state: paused; /* Controlado desde prueba.js */
 }
 
+/* El cuerpo negro del disco con efecto de surcos musicales */
+.vinyl-css {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+        #0d0d0d 0%, 
+        #1a1a1a 30%, 
+        #0a0a0a 40%, 
+        #262626 50%, 
+        #080808 60%, 
+        #1f1f1f 70%, 
+        #000000 100%);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.6),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 2px solid #111;
+}
+
+/* El centro de color del disco (La etiqueta del álbum) */
+.vinyl-center {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: #00d2ff; /* Color celeste neón para combinar con tu barra */
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* El agujero central del vinilo */
+.vinyl-center::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #0f0f1a; /* Mismo color del fondo de la página */
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Animación del motor rotativo */
+@keyframes girarDisco {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
     /* Botones con tamaño ideal para pantallas táctiles */
     .controls button {
         width: 46px;
