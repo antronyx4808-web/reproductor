@@ -3,6 +3,7 @@
 // ==========================================
 // 'archivo': El nombre real del .mp3 en tu carpeta (Fácil, sin errores).
 // 'titulo': El nombre bonito que se mirará en la pantalla LCD.
+const vinyl = document.getElementById('vinyl-record');
 const playlist = [
     { archivo: "musica1.mp3", titulo: "NCS - Prueba " },
     { archivo: "musica2.mp3", titulo: "Tame Impala - Let in happen" },
@@ -130,4 +131,40 @@ btnPrev.onclick = () => {
 // Auto-avanzar al terminar la canción
 audio.onended = () => {
     btnNext.click();
+};
+// Modifica la función cargarCancion para que encienda el vinilo si pasa a la siguiente automáticamente
+// Busca el "if (reproducir)" dentro de tu función cargarCancion y déjalo así:
+if (reproducir) {
+    audio.oncanplaythrough = () => {
+        audio.play().catch(err => console.log("Bloqueo de autoplay evitado"));
+        audio.oncanplaythrough = null; 
+    };
+    statusText.innerText = "REPRODUCIENDO";
+    statusText.style.color = "#00f2fe"; 
+    if (vinyl) vinyl.classList.add('playing'); // <-- ENCIENDE AL CAMBIAR DE CANCIÓN
+}
+
+// Modifica la sección de tus controles de botones abajo en el JS:
+btnPlay.onclick = () => {
+    if (playlist.length > 0) {
+        audio.play();
+        statusText.innerText = "REPRODUCIENDO";
+        statusText.style.color = "#00f2fe";
+        if (vinyl) vinyl.classList.add('playing'); // <-- ENCIENDE EL VINILO
+    }
+};
+
+btnPause.onclick = () => {
+    audio.pause();
+    statusText.innerText = "PAUSADO";
+    statusText.style.color = "#ffcc00"; 
+    if (vinyl) vinyl.classList.remove('playing'); // <-- PAUSA EL VINILO
+};
+
+btnStop.onclick = () => {
+    audio.pause();
+    audio.currentTime = 0;
+    statusText.innerText = "DETENIDO";
+    statusText.style.color = "#ef4444"; 
+    if (vinyl) vinyl.classList.remove('playing'); // <-- DETIENE EL VINILO
 };
