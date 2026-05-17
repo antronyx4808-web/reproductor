@@ -244,3 +244,60 @@ body {
     color: #ffffff;
     width: 50px;
     height: 50px
+/* ==========================================================================
+   5. DISEÑO RESPONSIVO INTEGRAL PARA TELÉFONOS (CELULARES)
+   ========================================================================== */
+@media (max-width: 768px) {
+    #app-wrapper {
+        flex-direction: column; /* Pasa de horizontal a una sola columna vertical */
+        align-items: center;
+        justify-content: flex-start;
+        padding: 15px;
+        gap: 25px;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    /* La Playlist se queda arriba en el teléfono */
+    #playlist-sidebar {
+        width: 100%;
+        max-width: 380px;
+        height: 220px; /* Altura fija en cel para que no tape toda la pantalla */
+        padding: 15px;
+    }
+
+    /* El buscador se adapta al ancho de la playlist en el cel */
+    #search-input {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    /* La lista interna de canciones mantiene su scroll vertical independiente */
+    #tracks-list-ui {
+        max-height: 120px; 
+    }
+
+    /* El Reproductor se acomoda abajo de la playlist */
+    .player-container {
+        width: 100%;
+        max-width: 380px;
+        padding: 20px;
+        z-index: 3; /* Se mantiene al frente para que el vinilo no tape los botones */
+    }
+
+    /* El Vinilo se esconde exactamente detrás del reproductor en la segunda fila */
+    .vinyl-wrapper {
+        top: 73%; /* Se desplaza hacia abajo para centrarse en el reproductor */
+        left: 50%;
+        width: 260px;
+        height: 260px;
+        z-index: 1; /* Forzado al fondo */
+    }
+
+    /* Botones con tamaño ideal para pantallas táctiles */
+    .controls button {
+        width: 46px;
+        height: 46px;
+        font-size: 1rem;
+    }
+}
