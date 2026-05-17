@@ -239,6 +239,32 @@ body {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+.search-container {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+#search-input {
+    width: 100%;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#search-input:focus {
+    border-color: #00d2ff; /* Brillo neón azul al hacer clic para escribir */
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
+}
+
+#search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
 /* ==========================================
    DISEÑO RESPONSIVO PARA TELÉFONOS
    ========================================== */
