@@ -18,204 +18,208 @@ const playlist = [
 ];
 
 // ==========================================
-// 2. SELECCIÓN DE ELEMENTOS DEL HTML
+// 2. ESTADOS GLOBALES DEL REPRODUCTOR
 // ==========================================
-const statusText = document.getElementById('status');
-const trackName = document.getElementById('track-name');
-const progressBar = document.getElementById('progress-bar');
-const vinyl = document.getElementById('vinyl-record');
-const tracksListUi = document.getElementById('tracks-list-ui'); // Lista izquierda
+let currentTrackIndex = 0;
+let isPlaying = false;
+const audio = new Audio();
 
+// Elementos de la Interfaz (DOM)
+const lcdTitle = document.getElementById('lcd-title'); // Pantalla donde sale el nombre
+const progressBar = document.getElementById('progress-bar'); // Tu barrita de tiempo
+const vinylWrapper = document.querySelector('.vinyl-wrapper'); // Contenedor del disco de fondo
+
+// Botones de control
 const btnPlay = document.getElementById('btn-play');
 const btnPause = document.getElementById('btn-pause');
 const btnStop = document.getElementById('btn-stop');
 const btnNext = document.getElementById('btn-next');
 const btnPrev = document.getElementById('btn-prev');
 
-let indiceActual = 0;
-const audio = new Audio(); 
+// ==========================================
+// 3. LOGICA PRINCIPAL DE RENDERS Y CARGAS
+// ==========================================
 
-// ==========================================
-// 3. FUNCIÓN PARA DIBUJAR LA LISTA EN PANTALLA
-// ==========================================
-function construirListaUI() {
-    if (!tracksListUi) return;
-    tracksListUi.innerHTML = ""; // Limpiamos la lista por seguridad
+// Función para inicializar y redibujar la barra lateral limpia
+function inicializarPlaylist() {
+    const listaUI = document.getElementById('tracks-list-ui');
+    if (!listaUI) return;
+
+    listaUI.innerHTML = ""; // Limpieza total para evitar duplicados
 
     playlist.forEach((cancion, index) => {
-        const li = document.createElement('li');
-        li.innerText = cancion.titulo;
-        
-        // Si es la canción que está seleccionada actualmente, le pone la clase activa
-        if (index === indiceActual) {
-            li.classList.add('active-track');
+        const item = document.createElement('li');
+        item.textContent = cancion.titulo;
+
+        // Le ponemos la clase activa si es la que está seleccionada
+        if (index === currentTrackIndex) {
+            item.classList.add('active');
         }
 
-        // Evento mágico: Si el usuario le da clic a este elemento de la lista izquierda
-        li.onclick = () => {
-            indiceActual = index;
-            cargarCancion(true); // Carga y reproduce de inmediato
-        };
+        // Evento de clic directo a la posición exacta
+        item.addEventListener('click', () => {
+            currentTrackIndex = index;
+            cargarCancion(currentTrackIndex);
+            reproducirCancion();
+        });
 
-        tracksListUi.appendChild(li);
+        listaUI.appendChild(item);
+    });
+}
+
+// Carga el archivo de audio en el buffer y actualiza la pantalla
+function cargarCancion(index) {
+    if (index < 0 || index >= playlist.length) return;
+    
+    audio.src = playlist[index].archivo;
+    if (lcdTitle) {
+        lcdTitle.textContent = playlist[index].titulo;
+    }
+    if (progressBar) {
+        progressBar.value = 0;
+    }
+    
+    // Refrescamos los estilos visuales en la barra lateral
+    actualizarEstiloLista();
+}
+
+// Resalta la canción que está sonando actualmente en la lista
+function actualizarEstiloLista() {
+    const items = document.querySelectorAll('#tracks-list-ui li');
+    items.forEach((item, index) => {
+        if (index === currentTrackIndex) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
     });
 }
 
 // ==========================================
-// 4. CONFIGURACIÓN DEL REPRODUCTOR
+// 4. CONTROL DE REPRODUCCIÓN Y ANIMACIÓN
 // ==========================================
-function cargarCancion(reproducir = false) {
-    if (playlist.length === 0) {
-        trackName.innerText = "No hay canciones";
-        return;
-    }
 
+function reproducirCancion() {
+    audio.play()
+        .then(() => {
+            isPlaying = true;
+            // Encendemos el motor del vinilo en el CSS
+            if (vinylWrapper) vinylWrapper.style.animationPlayState = 'running';
+        })
+        .catch(err => console.log("Error al reproducir audio: ", err));
+}
+
+function pausarCancion() {
     audio.pause();
-    audio.src = playlist[indiceActual].archivo;
-    audio.load(); 
-    
-    trackName.innerText = playlist[indiceActual].titulo;
-    if (progressBar) progressBar.value = 0;
-
-    // Actualizamos visualmente cuál canción está marcada en la lista izquierda
-    construirListaUI();
-
-    if (reproducir) {
-        audio.oncanplaythrough = () => {
-            audio.play().catch(err => console.log("Bloqueo de autoplay evitado"));
-            audio.oncanplaythrough = null; 
-        };
-        
-        statusText.innerText = "REPRODUCIENDO";
-        statusText.style.color = "#00f2fe"; 
-        if (vinyl) vinyl.classList.add('playing');
-    } else {
-        statusText.innerText = "SISTEMA LISTO";
-        statusText.style.color = "white";
-        if (vinyl) vinyl.classList.remove('playing');
-    }
+    isPlaying = false;
+    // Congelamos el vinilo en su posición actual
+    if (vinylWrapper) vinylWrapper.style.animationPlayState = 'paused';
 }
 
-// Inicializar el sistema al cargar la página
-window.onload = () => {
-    cargarCancion(false);
-};
-// Hace que la barra avance con la música
-audio.ontimeupdate = () => {
-    if (audio.duration && progressBar) {
-        const porcentaje = (audio.currentTime / audio.duration) * 100;
-        progressBar.value = porcentaje;
-    }
-};
-
-// Te permite hacer clic en cualquier parte de la barra para adelantar la canción
-if (progressBar) {
-    progressBar.oninput = () => {
-        if (audio.duration) {
-            const nuevoTiempo = (progressBar.value / 100) * audio.duration;
-            audio.currentTime = nuevoTiempo;
-        }
-    };
-}
-// ==========================================
-// 5. LÓGICA DE LA BARRITA DE PROGRESO
-// ==========================================
-audio.ontimeupdate = () => {
-    if (audio.duration && progressBar) {
-        const porcentaje = (audio.currentTime / audio.duration) * 100;
-        progressBar.value = porcentaje;
-    }
-};
-
-if (progressBar) {
-    progressBar.oninput = () => {
-        if (audio.duration) {
-            const nuevoTiempo = (progressBar.value / 100) * audio.duration;
-            audio.currentTime = nuevoTiempo;
-        }
-    };
-}
-
-// ==========================================
-// 6. CONTROLES DE LOS BOTONES
-// ==========================================
-btnPlay.onclick = () => {
-    if (playlist.length > 0) {
-        audio.play();
-        statusText.innerText = "REPRODUCIENDO";
-        statusText.style.color = "#00f2fe";
-        if (vinyl) vinyl.classList.add('playing');
-    }
-};
-
-btnPause.onclick = () => {
-    audio.pause();
-    statusText.innerText = "PAUSADO";
-    statusText.style.color = "#ffcc00"; 
-    if (vinyl) vinyl.classList.remove('playing');
-};
-
-btnStop.onclick = () => {
+function detenerCancion() {
     audio.pause();
     audio.currentTime = 0;
-    statusText.innerText = "DETENIDO";
-    statusText.style.color = "#ef4444"; 
-    if (vinyl) vinyl.classList.remove('playing');
-};
+    isPlaying = false;
+    if (progressBar) progressBar.value = 0;
+    // Detiene el giro por completo
+    if (vinylWrapper) vinylWrapper.style.animationPlayState = 'paused';
+}
 
-btnNext.onclick = () => {
-    if (playlist.length > 0) {
-        indiceActual = (indiceActual + 1) % playlist.length;
-        cargarCancion(true);
-    }
-};
+// Siguiente y Anterior
+function siguienteCancion() {
+    currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+    cargarCancion(currentTrackIndex);
+    if (isPlaying) reproducirCancion();
+}
 
-btnPrev.onclick = () => {
-    if (playlist.length > 0) {
-        indiceActual = (indiceActual - 1 + playlist.length) % playlist.length;
-        cargarCancion(true);
-    }
-};
+function anteriorCancion() {
+    currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+    cargarCancion(currentTrackIndex);
+    if (isPlaying) reproducirCancion();
+}
 
-audio.onended = () => {
-    btnNext.click();
-};
 // ==========================================
-// FUNCIÓN PARA EL BUSCADOR (CORREGIDA Y REACTIVA)
+// 5. ASIGNACIÓN DE EVENTOS A LOS BOTONES
+// ==========================================
+if (btnPlay) btnPlay.addEventListener('click', () => {
+    if (!isPlaying) reproducirCancion();
+});
+
+if (btnPause) btnPause.addEventListener('click', () => {
+    if (isPlaying) pausarCancion();
+});
+
+if (btnStop) btnStop.addEventListener('click', detenerCancion);
+if (btnNext) btnNext.addEventListener('click', siguienteCancion);
+if (btnPrev) btnPrev.addEventListener('click', anteriorCancion);
+
+// Salto automático cuando termina el track actual
+audio.addEventListener('ended', siguienteCancion);
+
+// Sincronizar la barra de progreso mientras avanza el tiempo
+if (progressBar) {
+    audio.addEventListener('timeupdate', () => {
+        if (audio.duration) {
+            const porcentaje = (audio.currentTime / audio.duration) * 100;
+            progressBar.value = porcentaje;
+        }
+    });
+
+    // Evento por si el usuario arrastra la barra para adelantar/atrasar
+    progressBar.addEventListener('input', (e) => {
+        if (audio.duration) {
+            const nuevoTiempo = (e.target.value / 100) * audio.duration;
+            audio.currentTime = nuevoTiempo;
+        }
+    });
+}
+
+// ==========================================
+// 6. CONTROLADOR DEL BUSCADOR INTEGRADO
 // ==========================================
 const searchInput = document.getElementById('search-input');
 
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
-        const textoBusqueda = e.target.value.toLowerCase();
+        const textoBusqueda = e.target.value.toLowerCase().trim();
+        const listaUI = document.getElementById('tracks-list-ui');
         
-        // 1. Filtramos las canciones que coinciden con la búsqueda
+        if (!listaUI) return;
+
+        // Si borra el texto, reseteamos a la lista original limpia
+        if (textoBusqueda === "") {
+            inicializarPlaylist();
+            return;
+        }
+        
+        // Filtramos las coincidencias del buscador
         const cancionesFiltradas = playlist.filter(cancion => 
             cancion.titulo.toLowerCase().includes(textoBusqueda)
         );
         
-        // 2. Limpiamos la lista visual de la izquierda
-        const listaUI = document.getElementById('tracks-list-ui');
+        // Vaciamos el contenedor antes de dibujar los resultados
         listaUI.innerHTML = "";
         
-        // 3. Volvemos a dibujar solo los resultados encontrados
         cancionesFiltradas.forEach((cancion) => {
             const item = document.createElement('li');
             item.textContent = cancion.titulo;
             
-            // Si la canción que se está dibujando es la que suena actualmente, le dejamos el estilo activo
+            // Si coincide con la que suena, se marca activa
             if (playlist[currentTrackIndex].archivo === cancion.archivo) {
-                item.classList.add('active'); // Por si manejas clase active en tu CSS
+                item.classList.add('active');
             }
             
-            // EL TRUCO ESTÁ AQUÍ: Al hacer clic, buscamos el índice REAL en la lista global
+            // IMPORTANTE: Busca el índice de la lista interna global usando el archivo .mp3
             item.addEventListener('click', () => {
                 const indiceReal = playlist.findIndex(p => p.archivo === cancion.archivo);
-                
                 if (indiceReal !== -1) {
-                    currentTrackIndex = indiceReal; // Seteamos el índice global correcto
-                    cargarCancion(currentTrackIndex); // Carga el archivo mp3 real
-                    reproducirCancion(); // Dispara el play y activa el vinilo
+                    currentTrackIndex = indiceReal;
+                    cargarCancion(currentTrackIndex);
+                    reproducirCancion();
+                    
+                    // Actualización visual de la selección en la búsqueda
+                    document.querySelectorAll('#tracks-list-ui li').forEach(li => li.classList.remove('active'));
+                    item.classList.add('active');
                 }
             });
             
